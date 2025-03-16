@@ -1,4 +1,3 @@
-// Solana Wallet Generator
 import { Keypair } from '@solana/web3.js';
 import * as bip39 from 'bip39';
 import bs58 from 'bs58';
@@ -8,14 +7,11 @@ import path from 'path';
 
 const prompt = promptSync({ sigint: true });
 
-// Function to generate a wallet from mnemonic
 async function generateWalletFromMnemonic() {
   try {
-    // Generate a random mnemonic (24 words by default)
-    const mnemonic = bip39.generateMnemonic(256); // 256 bits = 24 words
+    const mnemonic = bip39.generateMnemonic(256); 
     const seed = await bip39.mnemonicToSeed(mnemonic);
     
-    // Use only the first 32 bytes of the seed for the keypair
     const seedBuffer = Buffer.from(seed).slice(0, 32);
     const keypair = Keypair.fromSeed(seedBuffer);
     
@@ -31,7 +27,6 @@ async function generateWalletFromMnemonic() {
   }
 }
 
-// Function to generate a random wallet
 function generateRandomWallet() {
   try {
     const keypair = Keypair.generate();
@@ -48,7 +43,6 @@ function generateRandomWallet() {
   }
 }
 
-// Function to save wallets to a file
 function saveToFile(wallets) {
   try {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -63,14 +57,11 @@ function saveToFile(wallets) {
       content += `Mnemonic: ${wallet.mnemonic}\n\n`;
     });
     
-    // Create a warning message at the top of the file
     const warning = "WARNING: This file contains sensitive information. Keep it secure and do not share it.\n\n";
     
-    // Write to file with warning
     fs.writeFileSync(filename, warning + content);
     console.log(`Wallets saved to ${filename}`);
     
-    // Return the absolute path to the file
     return path.resolve(filename);
   } catch (error) {
     console.error('Error saving wallets to file:', error);
@@ -78,7 +69,6 @@ function saveToFile(wallets) {
   }
 }
 
-// Function to validate user input for wallet count
 function getValidWalletCount() {
   let count;
   
@@ -94,15 +84,12 @@ function getValidWalletCount() {
   }
 }
 
-// Main function
 async function main() {
   console.log('=== Solana Wallet Generator ===');
   
   try {
-    // Ask how many wallets to generate with validation
     const count = getValidWalletCount();
     
-    // Ask for generation method
     let generateWithMnemonic;
     while (true) {
       const method = prompt('Generate with mnemonic phrases? (y/n, default: y): ').toLowerCase() || 'y';
@@ -115,7 +102,6 @@ async function main() {
     
     console.log(`\nGenerating ${count} Solana wallet${count > 1 ? 's' : ''}...`);
     
-    // Generate wallets
     const wallets = [];
     for (let i = 0; i < count; i++) {
       try {
@@ -124,7 +110,6 @@ async function main() {
           : generateRandomWallet();
         wallets.push(wallet);
         
-        // Display wallet info
         console.log(`\n=== Wallet ${i + 1} ===`);
         console.log(`Address: ${wallet.address}`);
         console.log(`Base58 PrivateKey: ${wallet.privateKeyBase58}`);
@@ -141,7 +126,6 @@ async function main() {
       return;
     }
     
-    // Ask if user wants to save to file
     let filePath = null;
     while (true) {
       const saveOption = prompt('\nDo you want to save these wallets to a text file? (y/n): ').toLowerCase();
@@ -165,7 +149,6 @@ async function main() {
   }
 }
 
-// Run the main function
 main().catch(err => {
   console.error('An error occurred:', err);
 }); 
