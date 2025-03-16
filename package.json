@@ -1,0 +1,16 @@
+{
+  "name": "solwallet",
+  "version": "1.0.0",
+  "description": "Solana wallet address generator",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.78.0",
+    "bip39": "^3.1.0",
+    "bs58": "^5.0.0",
+    "prompt-sync": "^4.2.0"
+  },
+  "type": "module"
+} 
